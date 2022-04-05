@@ -1,9 +1,15 @@
-import { FastifyPlugin, FastifyReply, RawServerBase } from 'fastify';
+import { FastifyPlugin, FastifyReply, FastifyInstance, RawServerBase } from 'fastify';
 
 declare module "fastify" {
   interface FastifyReply {
-    view<T extends { [key: string]: any; }>(page: string, data: T): FastifyReply;
-    view(page: string, data?: object): FastifyReply;
+    [propertyName extends string]<T extends { [key: string]: any; }>(page: string, data: T): FastifyReply;
+    [propertyName extends string](page: string, data?: object): FastifyReply;
+  }
+  interface FastifyInstance {
+    [propertyName extends string]<T extends { [key: string]: any; }>(page: string, data: T): Promise<void>;
+    [propertyName extends string](page: string, data?: object): Promise<void>;
+    [propertyName extends string]<T extends { [key: string]: any; }>(page: string, data: T, callback: (err: Error | null, data: string)): FastifyReply;
+    [propertyName extends string](page: string, data?: object): FastifyReply;
   }
 }
 
