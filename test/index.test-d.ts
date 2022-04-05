@@ -26,6 +26,7 @@ app.register(pointOfView, {
   options: {},
   layout: "layout",
   charset: "utf-8",
+  propertyName: "render",
   maxCache: 100,
   production: false,
   root: path.resolve(__dirname, "../templates"),
@@ -33,7 +34,7 @@ app.register(pointOfView, {
 });
 
 app.get("/", (request, reply) => {
-  reply.view("/index-with-no-data");
+  reply.render("/index-with-no-data");
 });
 
 app.get("/data", (request, reply) => {
@@ -43,7 +44,7 @@ app.get("/data", (request, reply) => {
 
   // reply.locals.appVersion = 1 // not a valid type
   reply.locals.appVersion = '4.14.0'
-  reply.view("/index", { text: "Sample data" });
+  reply.render("/index", { text: "Sample data" });
 });
 
 app.get("/dataTyped", (request, reply) => {
@@ -53,8 +54,12 @@ app.get("/dataTyped", (request, reply) => {
 
   // reply.locals.appVersion = 1 // not a valid type
   reply.locals.appVersion = '4.14.0'
-  reply.view<{ text: string; }>("/index", { text: "Sample data" });
+  reply.render<{ text: string; }>("/index", { text: "Sample data" });
 });
+
+//insert strong typechecking test here when it works
+
+//end strong typecheck test
 
 app.listen(3000, (err, address) => {
   if (err) throw err
